@@ -27,13 +27,16 @@ public class Expression {
         long sum = 0L;
         for (Digit digit : numbers) {
             sum += digit.getDigit();
-        }
-
-        if (sum > Integer.MAX_VALUE) {
-            throw new IllegalArgumentException("합계가 정수형 최대 범위를 초과했습니다.");
+            validateSumOverflow(sum);
         }
 
         return sum;
+    }
+
+    private static void validateSumOverflow(long sum) {
+        if (sum > Integer.MAX_VALUE) {
+            throw new IllegalArgumentException("합계가 정수형 최대 범위를 초과했습니다.");
+        }
     }
 
     private List<Digit> parseExpression(String text) {
