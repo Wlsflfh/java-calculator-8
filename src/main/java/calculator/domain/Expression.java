@@ -28,9 +28,11 @@ public class Expression {
         for (Digit digit : numbers) {
             sum += digit.getDigit();
         }
+
         if (sum > Integer.MAX_VALUE) {
             throw new IllegalArgumentException("합계가 정수형 최대 범위를 초과했습니다.");
         }
+
         return sum;
     }
 
@@ -66,6 +68,7 @@ public class Expression {
 
         String customDelimiter = matcher.group(1);
         validateCustomDelimiter(customDelimiter);
+
         return DEFAULT_DELIMITER + REGEX_OR + customDelimiter;
     }
 
@@ -79,6 +82,7 @@ public class Expression {
             if (number.trim().isEmpty()) continue;
             digits.add(new Digit(number));
         }
+
         return digits;
     }
 
