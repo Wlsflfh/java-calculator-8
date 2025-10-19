@@ -8,14 +8,14 @@ import java.util.regex.Pattern;
 public class Expression {
 
     private static final String REGEX_OR = "|";
-    private static final String DEFAULT_DELIMITER = ",|:";
+    private static final String DEFAULT_DELIMITER_REGEX = ",|:";
     private static final String CUSTOM_DELIMITER_PREFIX = "//";
     private static final String CUSTOM_DELIMITER_SUFFIX = "\n";
     private static final String INPUT_DELIMITER_SUFFIX = "\\n";
     private static final String INVALID_CUSTOM_DELIMITER_REGEX = "[0-9]";
     private static final String CUSTOM_DELIMITER_FORMAT_REGEX = "//(.)\n(.*)";
-    public static final String ALLOWED_DELIMITER_PREFIX = "[^0-9";
-    public static final String ALLOWED_DELIMITER_SUFFIX = "]";
+    public static final String ALLOWED_DELIMITER_REGEX_PREFIX = "[^0-9";
+    public static final String ALLOWED_DELIMITER_REGEX_SUFFIX = "]";
 
     private final List<Digit> numbers;
 
@@ -42,7 +42,7 @@ public class Expression {
     private List<Digit> parseExpression(String text) {
         if (text.isEmpty()) return new ArrayList<>();
 
-        String delimiter = DEFAULT_DELIMITER;
+        String delimiter = DEFAULT_DELIMITER_REGEX;
         String numbersPart = text;
 
         if (hasCustomDelimiter(text)) {
@@ -72,7 +72,7 @@ public class Expression {
         String customDelimiter = matcher.group(1);
         validateCustomDelimiter(customDelimiter);
 
-        return DEFAULT_DELIMITER + REGEX_OR + customDelimiter;
+        return DEFAULT_DELIMITER_REGEX + REGEX_OR + customDelimiter;
     }
 
     private String extractNumbersPart(Matcher matcher) {
@@ -81,6 +81,7 @@ public class Expression {
 
     private List<Digit> convertToDigits(String[] splitNumbers) {
         List<Digit> digits = new ArrayList<>();
+
         for (String number : splitNumbers) {
             if (number.trim().isEmpty()) continue;
             digits.add(new Digit(number));
@@ -90,9 +91,9 @@ public class Expression {
     }
 
     private void validateAllowedDelimiter(String expressionText, String delimiter) {
-        String pattern = ALLOWED_DELIMITER_PREFIX + Pattern.quote(delimiter) + ALLOWED_DELIMITER_SUFFIX;
+        String allowedDelimiter = ALLOWED_DELIMITER_REGEX_PREFIX + Pattern.quote(delimiter) + ALLOWED_DELIMITER_REGEX_SUFFIX;
 
-        if (Pattern.compile(pattern).matcher(expressionText).find()) {
+        if (Pattern.compile(allowedDelimiter).matcher(expressionText).find()) {
             throw new IllegalArgumentException("구분자와 일치하지 않는 문자가 존재합니다.");
         }
     }
