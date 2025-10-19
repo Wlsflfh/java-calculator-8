@@ -2,14 +2,16 @@ package calculator.domain;
 
 public class Digit {
 
+    private static final int INTEGER_MAX_VALUE = Integer.MAX_VALUE;
+
     private final int digit;
 
     public Digit(String digit) {
         validateDigit(digit);
-        this.digit = parse(digit);
+        this.digit = parseDigit(digit);
     }
 
-    private int parse(String digit) {
+    private int parseDigit(String digit) {
         return Integer.parseInt(digit);
     }
 
@@ -22,7 +24,7 @@ public class Digit {
     }
 
     private static void validateMaxInteger(long value) {
-        if (value > Integer.MAX_VALUE) {
+        if (value > INTEGER_MAX_VALUE) {
             throw new IllegalArgumentException("입력값이 정수형 최대 범위를 초과했습니다.");
         }
     }

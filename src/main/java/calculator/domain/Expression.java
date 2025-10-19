@@ -7,14 +7,17 @@ import java.util.regex.Pattern;
 
 public class Expression {
 
-    private final List<Digit> numbers;
-
+    private static final String REGEX_OR = "|";
     private static final String DEFAULT_DELIMITER = ",|:";
     private static final String CUSTOM_DELIMITER_PREFIX = "//";
     private static final String CUSTOM_DELIMITER_SUFFIX = "\n";
     private static final String INPUT_DELIMITER_SUFFIX = "\\n";
-    private static final String CUSTOM_DELIMITER_REGEX = "[^0-9]";
+    private static final String INVALID_CUSTOM_DELIMITER_REGEX = "[0-9]";
     private static final String CUSTOM_DELIMITER_FORMAT_REGEX = "//(.)\n(.*)";
+    public static final String ALLOWED_DELIMITER_PREFIX = "[^0-9";
+    public static final String ALLOWED_DELIMITER_SUFFIX = "]";
+
+    private final List<Digit> numbers;
 
     public Expression(String text) {
         this.numbers = parseExpression(text);
@@ -63,7 +66,7 @@ public class Expression {
 
         String customDelimiter = matcher.group(1);
         validateCustomDelimiter(customDelimiter);
-        return DEFAULT_DELIMITER + "|" + customDelimiter;
+        return DEFAULT_DELIMITER + REGEX_OR + customDelimiter;
     }
 
     private String extractNumbersPart(Matcher matcher) {
@@ -80,7 +83,7 @@ public class Expression {
     }
 
     private void validateAllowedDelimiter(String expressionText, String delimiter) {
-        String pattern = "[^0-9" + Pattern.quote(delimiter) + "]";
+        String pattern = ALLOWED_DELIMITER_PREFIX + Pattern.quote(delimiter) + ALLOWED_DELIMITER_SUFFIX;
 
         if (Pattern.compile(pattern).matcher(expressionText).find()) {
             throw new IllegalArgumentException("구분자와 일치하지 않는 문자가 존재합니다.");
@@ -88,7 +91,7 @@ public class Expression {
     }
 
     private void validateCustomDelimiter(String customDelimiter) {
-        if (!Pattern.matches(CUSTOM_DELIMITER_REGEX, customDelimiter)) {
+        if (Pattern.matches(INVALID_CUSTOM_DELIMITER_REGEX, customDelimiter)) {
             throw new IllegalArgumentException("잘못된 커스텀 구분자 형식입니다.");
         }
     }
