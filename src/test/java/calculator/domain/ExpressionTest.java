@@ -55,7 +55,7 @@ class ExpressionTest {
     }
 
     @Test
-    @DisplayName("기본 구분자 이외의 문자가 나왔을 때 예외를 던지는지 확인한다")
+    @DisplayName("기본 구분자 이외의 문자가 나왔을 때 예외를 발생시키는지 확인한다")
     void defaultDelimiterTest() {
         // given
         String nonAllowedDelimiter = "1,2;3";
@@ -77,7 +77,7 @@ class ExpressionTest {
     }
 
     @Test
-    @DisplayName("커스텀 구분자 패턴과 맞지 않을 때 예외를 던지는지 확인한다")
+    @DisplayName("커스텀 구분자 패턴과 맞지 않을 때 예외를 발생시키는지 확인한다")
     void customDelimiterTest() {
         // given
         String emptyCustom = "//\n1,23";
