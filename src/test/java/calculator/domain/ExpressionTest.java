@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ExpressionTest {
 
     @Test
-    @DisplayName("빈 문자열(공백)은 0으로 처리하는지 확인한다")
+    @DisplayName("빈 문자열(공백은 X)은 0으로 처리하는지 확인한다")
     void emptyTextTest() {
         // given
         String emptyText = "";
@@ -24,6 +24,18 @@ class ExpressionTest {
         // then
         assertEquals(0, sum1);
         assertEquals(0, sum2);
+    }
+
+    @Test
+    @DisplayName("공백(스페이스)은 예외를 발생시키는지 확인한다")
+    void spaceTextTest() {
+        // given
+        String spaceText = "1, ,2,3";
+
+        // when - then
+        assertThatThrownBy(() -> new Expression(spaceText))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("구분자와 일치하지 않는 문자가 존재합니다.");
     }
 
     @Test
